@@ -1,4 +1,6 @@
-Pipeline details:
+Hypertribe nextflow pipeline:
+
+
 
 
 
