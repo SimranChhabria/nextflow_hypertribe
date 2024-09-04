@@ -33,7 +33,7 @@ https://www.nature.com/articles/s41467-020-15814-8#Sec8
 mamba env create -n nextflow_mamba -f env.yaml
 ```
 ## HOW TO RUN THE PIPELINE:
-- INPUT PATHS:
+- INPUTS:
     - input_reads   =</path/of/the/directory/containing/fastq/files>
     - output_dir    =</path/of/the/directory/to/store/results>
     - genome_dir    =</path/of/the/directory/containing/reference/indexes>
@@ -56,7 +56,8 @@ mamba env create -n nextflow_mamba -f env.yaml
     - workflow_DE              = "DESEQ2" or "NULL"
     - genome_build             = "hg38"
 
-- Command:
+- COMMAND:
+
   Change all the required parameters in the bash script and run the following command
 
   ```
