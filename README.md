@@ -37,7 +37,7 @@ mamba env create -n nextflow_mamba -f env.yaml
     - input_reads   =</path/of/the/directory/containing/fastq/files>
     - output_dir    =</path/of/the/directory/to/store/results>
     - genome_dir    =</path/of/the/directory/containing/reference/indexes>
-    - sample_sheet  =</path/of/the/file/with/sample_sheet.csv>
+    - sample_sheet  =</path/of/the/sample_sheet.csv>
           
      **Example of the sample_sheet.csv** 
 
@@ -57,6 +57,8 @@ mamba env create -n nextflow_mamba -f env.yaml
     - genome_build             = "hg38"
 
 - Command:
+  Change all the required parameters in the bash script and run the following command
+
   ```
   bash run_hypertribe_pipeline.sh
   ```
