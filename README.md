@@ -7,10 +7,11 @@ https://www.nature.com/articles/s41467-020-15814-8#Sec8
 
 - Pre-processing:
     - MutliQC
+    - Qualimap
 - Alignment:
     - Mapping the reads with reference genome
 
-### HYPERTRIBE STEPS:
+#### HYPERTRIBE STEPS:
 
 - Post-Alignment Filtering:
     - SplitNCigarReads and reassign mapping qualities
@@ -20,7 +21,7 @@ https://www.nature.com/articles/s41467-020-15814-8#Sec8
     - Base editing stats and comparisons
 - Plots
  
-### RNA-seq expression STEPS:
+#### RNA-seq expression STEPS:
 
 - RNA seq counts from merged bams
 - Differential gene expression using DESeq2
