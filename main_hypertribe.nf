@@ -88,16 +88,25 @@ def group_per_sample = { channel ->
 workflow {
       
       // ** -- Read sampled from the folder
+      // reads_ch = Channel.fromFilePairs(params.input_dir,
+      //     size: 2,
+      //     flat: false)
+      //     { file -> file.name.split('_R')[0] }
+      //     .map { sample, files ->
+      //           def lane = files[0].name =~ /L00[1-4]/
+      //           [sample.split('_')[0], lane[0], files.sort().collect { it.toString() }]
+      //       }
+
       reads_ch = Channel.fromFilePairs(params.input_dir,
           size: 2,
           flat: false)
           { file -> file.name.split('_R')[0] }
           .map { sample, files ->
-                def lane = files[0].name =~ /L00[1-4]/
+                def lane = files[0].name =~ /S.*_L00[1-4]/ 
                 [sample.split('_')[0], lane[0], files.sort().collect { it.toString() }]
             }
 
-          // reads_ch.view { "reads_ch: ${it}"}
+      reads_ch.view { "reads_ch: ${it}"}
 
       // ** -- Read the sample sheet
       deseq_ch = join_csv(file(params.sample_sheet))
@@ -109,14 +118,26 @@ workflow {
             reads_ch)
 
 
+      mapped_ch = RNASEQ_MAPPING_STAR.out
+                  .map { id, sample_lane, files1, files2, files3 ->
+                       def sample = sample_lane.split('_')[0]  // Splitting sample_lane to extract the sample
+                       //def lane = sample_lane.split('_')[1]
+                       def combined_id_sample = "${id}_${sample}"  // Combine id and sample
+                       return [id, sample_lane,files1, files2, files3 ]}
+      mapped_ch.view()
+
       // PART 2: Run MultiQC on all qualimap results
       //RUN_MULTIQC(rnaseq_map_ch.collect { it[4] })
-
+  
       // Merge BAM files from different lanes
-      merge_ch_input = group_per_sample(RNASEQ_MAPPING_STAR.out).map { s ->
-        [s[0], s[2]]}
+      merge_ch_input = group_per_sample(mapped_ch).map { s ->
+        [s[0],s[2]]}
+      
+      // merge_ch_input = merge_ch_input.map{combined_id_sample, bam ->
+      //                                     def sample = combined_id_sample.split('_')[0] 
+      //                                     return [sample,bam] }
 
-      // merge_ch_input.view { "merge_ch_input: ${it}"}
+      merge_ch_input.view { "merge_ch_input: ${it}"}
 
       MERGE_BAMS(merge_ch_input)
       merged_bams_ch = MERGE_BAMS.out

@@ -159,7 +159,7 @@ process RNASEQ_MAPPING_STAR {
   # Index the BAM file
   samtools index ${lane}_Aligned.sortedByCoord.uniq.bam
 
-  qualimap bamqc -bam ${lane}_Aligned.sortedByCoord.uniq.bam -outdir qualimap_${sample}_${lane}
+  qualimap bamqc --java-mem-size=16G -bam ${lane}_Aligned.sortedByCoord.uniq.bam -outdir qualimap_${sample}_${lane}
   """
 }
 
@@ -309,7 +309,7 @@ process RNASEQ_CALL_VARIANTS {
     path genome
     path index
     path dict
-    tuple val(sampleId), path(bam), path(bai)
+    tuple val(sampleId), path(rnaseq_grp), path(bam), path(bai)
  
   output: 
     tuple val(sampleId), \

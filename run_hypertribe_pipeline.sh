@@ -7,7 +7,6 @@
 #BSUB -eo nextflow_hypertribe_%J.stderr
 
 source ~/.bashrc
-module load java/11.0.12
 mamba activate nextflow_mamba
 # module load samtools/1.13
 # module load gatk/4.3.0.0
@@ -20,7 +19,7 @@ diff_threshold_deseq2="1"
 diff_threshold_hyper="0.1"
 project_name="Project_15619"
 workflow_HY="NULL"
-workflow_DE="DESEQ2"
+workflow_DE="NULL"
 
 
 genome="${genome_dir}/${genome_build}.fa"
@@ -37,6 +36,7 @@ editor="ADAR"
 input_reads="/data/morrisq/baalii/HyperTribe_MSI2_Wei/input_data/*15619*/*_L00{1,2,3,4}_R{1,2}_001.fastq.gz"
 output_dir="/data//morrisq/simranch/nextflow/output_data/Project_15619/"
 sample_sheet="/data//morrisq/simranch/nextflow/Test_Hypertribe/sample_sheet_test1.csv"
+work_dir="$output_dir/work"
 
 
 
@@ -101,6 +101,8 @@ nextflow run main_hypertribe.nf \
 --workflow_HY $workflow_HY \
 --workflow_DE $workflow_DE \
 -profile lsf \
+-work-dir $work_dir \
 -resume
+
 
  
