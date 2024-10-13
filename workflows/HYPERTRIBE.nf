@@ -52,8 +52,8 @@ workflow HYPERTRIBE {
         .map { it.flatten() }
         .toList()
         .map { it.transpose() }
-        .map { [it[0].join(','), it[1], it[2], it[3]] }
-        //.view{"format_ch: ${it}"}
+        .map { [it[0].join(','), it[2], it[4], it[5]] }
+        .view{"format_ch: ${it}"}
         // format_ch = RNASEQ_CALL_VARIANTS.out.join(RNASEQ_GATK_RECALIBRATE.out).toList().map { it.transpose() }.map { it[0].join(','), it[1], it[2], it[3] }.view{"format_ch: ${it}"}
        
     // PART 6: Format the output

@@ -37,13 +37,13 @@ mamba env create -n nextflow_mamba -f env.yaml
     - input_reads   =</path/of/the/directory/containing/fastq/files>
     - output_dir    =</path/of/the/directory/to/store/results>
     - genome_dir    =</path/of/the/directory/containing/reference/indexes>
-    - sample_sheet  =</path/of/the/sample_sheet.csv>
+    - sample_sheet  =</path/of/the/deseq2/sample_sheet.csv>
+    - sample_sheet2 =</path/of/the/fastq/files/sample_sheet2.csv>
           
      **Example of the sample_sheet.csv** 
 
      ```
      Condition,Control
-     condition_samples_group,ctrl_sample_group
      MSI2-ADAR,MIG
      ```
        

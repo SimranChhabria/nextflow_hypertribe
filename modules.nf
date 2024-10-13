@@ -112,12 +112,12 @@ process RNASEQ_MAPPING_STAR {
   memory = 20.GB
   time = '48h'
 
-  tag "$sample"
+  tag "$lane"
 
   input:
     path genome
     path genomeDir
-    tuple val(sample), val(lane), path(reads)
+    tuple val(sample), val(lane), path(read1),path(read2)
 
   output:
     tuple \
@@ -131,7 +131,7 @@ process RNASEQ_MAPPING_STAR {
   """
   # ngs-nf-dev Align reads to genome
   STAR --genomeDir $genomeDir \
-       --readFilesIn $reads \
+       --readFilesIn $read1 $read2 \
        --runThreadN $task.cpus \
        --readFilesCommand zcat \
        --outFilterType BySJout \
@@ -141,7 +141,7 @@ process RNASEQ_MAPPING_STAR {
 
   # Run 2-pass mapping (improve alignmets using table of splice junctions and create a new index)
   STAR --genomeDir $genomeDir \
-       --readFilesIn $reads \
+       --readFilesIn $read1 $read2 \
        --runThreadN $task.cpus \
        --readFilesCommand zcat \
        --outFilterType BySJout \
@@ -215,17 +215,17 @@ process RNASEQ_GATK_SPLITNCIGAR {
   memory = 20.GB
   time = '10h'
 
-  tag "$replicateId"
+  tag "$sample"
   label 'mem_large'
   
   input: 
     path genome
     path index
     path dict
-    tuple val(replicateId), path(bam), path(index)
+    tuple val(sample), path(bam), path(index)
 
   output:
-    tuple val(replicateId), path('1_split.bam'), path('1_split.bai')
+    tuple val(sample), path('1_split.bam'), path('1_split.bai')
   
   publishDir "${params.output_dir}/hypertribe/${sample}/", mode: 'copy'
 
@@ -251,7 +251,7 @@ process RNASEQ_GATK_RECALIBRATE {
   memory = 20.GB
   time = '10h'
 
-  tag "$replicateId"
+  tag "$sample"
   label "mem_large"
 
   input: 
@@ -356,7 +356,7 @@ process FORMAT_OUTPUT {
   time = '20h'
 
 
-  publishDir "${params.output_dir}/", mode: 'copy'
+  publishDir "${params.output_dir}/hypertribe/", mode: 'copy'
 
   input:
     val gtf_path
@@ -371,7 +371,7 @@ process FORMAT_OUTPUT {
   script:
   """
   echo \$(pwd)
-
+  echo ${samples}
   Rscript $baseDir/scripts/base_editing/4_format_output.R \
   --working_dir \$(pwd) \
   --gtf_path $gtf_path \
@@ -394,7 +394,7 @@ process BE_STATS {
   memory = 20.GB
   time = '20h'
 
-  publishDir "${params.output_dir}/deseq2/base_edit/", mode: 'copy'
+  publishDir "${params.output_dir}/hypertribe/DES/", mode: 'copy'
   tag "BE_STATS"
 
   input:

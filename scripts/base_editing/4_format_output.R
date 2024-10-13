@@ -81,7 +81,9 @@ setwd(working_dir)
 sample_list <- strsplit(args$samples, ",")[[1]]
 gtf_path <- args$gtf_path
 bam_path_list <- strsplit(args$bam_path_list, ",")[[1]]
+cat('bam_path_list: ', bam_path_list)
 vcf_path_list <- strsplit(args$vcf_path_list, ",")[[1]]
+cat('vcf_path_list: ', bam_path_list)
 genome_build <- args$genome_build
 editor  <- args$editor
 
@@ -107,7 +109,6 @@ editor  <- args$editor
 
 names(bam_path_list) <- sample_list
 names(vcf_path_list) <- sample_list
-
 
 
 # Read transcripts from GTF file
